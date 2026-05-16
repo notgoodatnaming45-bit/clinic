@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { Upload, File, CheckCircle, AlertCircle, X } from "lucide-react";
 import clsx from "clsx";
 import toast from "react-hot-toast";
-import { api } from "@/lib/api";
+
 
 interface UploadFile {
   file: File;
