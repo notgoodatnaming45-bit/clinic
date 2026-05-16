@@ -44,7 +44,7 @@ export default function LoginPage() {
     if (!data.totp_code) return;
     setIsLoading(true);
     try {
-      const result = await authApi.verifyMFA(tempToken, data.totp_code);
+      const result: any = await authApi.verifyMFA(tempToken, data.totp_code);
       localStorage.setItem("tbi_access_token", result.access_token);
       router.push("/dashboard");
     } catch {
