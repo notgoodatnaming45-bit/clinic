@@ -36,10 +36,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# if settings.APP_ENV == "production":
+#     app.add_middleware(
+#         TrustedHostMiddleware,
+#         allowed_hosts=["app.yourdomain.com", "*.yourdomain.com"],
+#     )
+
 if settings.APP_ENV == "production":
     app.add_middleware(
         TrustedHostMiddleware,
-        allowed_hosts=["app.yourdomain.com", "*.yourdomain.com"],
+        allowed_hosts=[
+            "localhost",
+            "127.0.0.1",
+            "*.railway.app",
+            "*.up.railway.app",
+            "clinic-production-6bce.up.railway.app",
+        ],
     )
 
 # ── Routers ───────────────────────────────────────────────────
