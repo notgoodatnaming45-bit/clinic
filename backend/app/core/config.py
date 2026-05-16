@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str
 
+    OPENAI_API_KEY: str | None = None
+    OPENAI_MODEL: str | None = None
+
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
 

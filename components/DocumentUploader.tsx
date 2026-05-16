@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { Upload, File, CheckCircle, AlertCircle, X } from "lucide-react";
 import clsx from "clsx";
 import toast from "react-hot-toast";
-import { api } from "@/lib/api";
+import axios from "axios";
 
 interface UploadFile {
   file: File;
@@ -51,7 +51,7 @@ export function DocumentUploader({ patientId, onUploadComplete }: DocumentUpload
       formData.append("file", files[i].file);
 
       try {
-        await api.post(`/api/v1/documents/upload/${patientId}`, formData, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/documents/upload`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
