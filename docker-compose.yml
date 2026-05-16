@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tbi_postgres
+    environment:
+      POSTGRES_DB: tbi_clinic
+      POSTGRES_USER: tbi_admin
+      POSTGRES_PASSWORD: localdev_password_change_in_prod
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: tbi_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: tbi_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    profiles:
+      - production
+
+volumes:
+  postgres_data:
