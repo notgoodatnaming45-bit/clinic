@@ -1,52 +1,3 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
-
-// export default function DashboardPage() {
-//   const [patients, setPatients] = useState<any[]>([]);
-//   const [logs, setLogs] = useState<any[]>([]);
-
-//   useEffect(() => {
-//     setPatients(JSON.parse(localStorage.getItem("patients") || "[]"));
-//     setLogs(JSON.parse(localStorage.getItem("auditLogs") || "[]"));
-//   }, []);
-
-//   const pendingReviews = patients.filter((p) => p.status === "Review").length;
-
-//   return (
-//     <div className="space-y-6">
-//       <div>
-//         <h1 className="text-4xl font-bold text-slate-900">TBI Dashboard</h1>
-//         <p className="mt-2 text-slate-500">
-//           Welcome to the RUF.AI clinical workflow platform.
-//         </p>
-//       </div>
-
-//       <div className="grid gap-6 md:grid-cols-4">
-//         <div className="rounded-2xl border bg-white p-6 shadow-sm">
-//           <p className="text-sm text-slate-500">Active Cases</p>
-//           <h2 className="mt-3 text-3xl font-bold">{patients.length}</h2>
-//         </div>
-
-//         <div className="rounded-2xl border bg-white p-6 shadow-sm">
-//           <p className="text-sm text-slate-500">Pending Reviews</p>
-//           <h2 className="mt-3 text-3xl font-bold">{pendingReviews}</h2>
-//         </div>
-
-//         <div className="rounded-2xl border bg-white p-6 shadow-sm">
-//           <p className="text-sm text-slate-500">AI Drafts</p>
-//           <h2 className="mt-3 text-3xl font-bold">0</h2>
-//         </div>
-
-//         <div className="rounded-2xl border bg-white p-6 shadow-sm">
-//           <p className="text-sm text-slate-500">Audit Events</p>
-//           <h2 className="mt-3 text-3xl font-bold">{logs.length}</h2>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import Link from "next/link";
@@ -101,73 +52,59 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-4xl font-bold text-slate-900">TBI Dashboard</h1>
-        <p className="mt-2 text-slate-500">
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
+          TBI Dashboard
+        </h1>
+        <p className="mt-1 text-sm text-slate-500 sm:mt-2 sm:text-base">
           PostgreSQL-backed clinical workflow overview.
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-4">
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">Active Cases</p>
-          <h2 className="mt-3 text-3xl font-bold">
-            {loading ? "..." : activeCases}
-          </h2>
-        </div>
-
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">Pending Reviews</p>
-          <h2 className="mt-3 text-3xl font-bold">
-            {loading ? "..." : pendingReviews}
-          </h2>
-        </div>
-
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">Urgent / Stat Cases</p>
-          <h2 className="mt-3 text-3xl font-bold">
-            {loading ? "..." : urgentCases}
-          </h2>
-        </div>
-
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">Total Patients</p>
-          <h2 className="mt-3 text-3xl font-bold">
-            {loading ? "..." : patients.length}
-          </h2>
-        </div>
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:grid-cols-4">
+        {[
+          { label: "Active Cases", value: activeCases },
+          { label: "Pending Reviews", value: pendingReviews },
+          { label: "Urgent / Stat Cases", value: urgentCases },
+          { label: "Total Patients", value: patients.length },
+        ].map(({ label, value }) => (
+          <div key={label} className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
+            <p className="text-xs text-slate-500 sm:text-sm">{label}</p>
+            <h2 className="mt-2 text-2xl font-bold sm:mt-3 sm:text-3xl">
+              {loading ? "..." : value}
+            </h2>
+          </div>
+        ))}
       </div>
 
-      <div className="rounded-2xl border bg-white p-6 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">
+            <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
               Recent Patients
             </h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-xs text-slate-500 sm:text-sm">
               Latest records from PostgreSQL.
             </p>
           </div>
-
           <Link
             href="/dashboard/patients"
-            className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+            className="w-full rounded-xl bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-blue-700 sm:w-auto sm:px-5 sm:py-3"
           >
             View All Patients
           </Link>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-2xl border">
-          <table className="w-full text-left">
-            <thead className="bg-slate-50 text-sm text-slate-500">
+        <div className="mt-4 overflow-x-auto rounded-2xl border sm:mt-6">
+          <table className="w-full min-w-[500px] text-left text-sm">
+            <thead className="bg-slate-50 text-slate-500">
               <tr>
-                <th className="p-4">Patient</th>
-                <th className="p-4">MRN</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Priority</th>
-                <th className="p-4">Open</th>
+                <th className="p-3 sm:p-4">Patient</th>
+                <th className="p-3 sm:p-4">MRN</th>
+                <th className="p-3 sm:p-4">Status</th>
+                <th className="p-3 sm:p-4">Priority</th>
+                <th className="p-3 sm:p-4">Open</th>
               </tr>
             </thead>
-
             <tbody>
               {loading ? (
                 <tr>
@@ -184,27 +121,23 @@ export default function DashboardPage() {
               ) : (
                 recentPatients.map((patient) => (
                   <tr key={patient.id} className="border-t hover:bg-slate-50">
-                    <td className="p-4">
+                    <td className="p-3 sm:p-4">
                       <p className="font-semibold text-slate-900">
-                        {patient.first_name_encrypted}{" "}
-                        {patient.last_name_encrypted}
+                        {patient.first_name_encrypted} {patient.last_name_encrypted}
                       </p>
-                      <p className="mt-1 text-xs text-slate-500">
+                      <p className="mt-0.5 text-xs text-slate-500">
                         ID: {patient.id}
                       </p>
                     </td>
-
-                    <td className="p-4">{patient.mrn}</td>
-
-                    <td className="p-4">
-                      <span className="rounded-full bg-blue-50 px-3 py-1 text-sm text-blue-700">
+                    <td className="p-3 sm:p-4">{patient.mrn}</td>
+                    <td className="p-3 sm:p-4">
+                      <span className="rounded-full bg-blue-50 px-2 py-1 text-xs text-blue-700">
                         {patient.case_status}
                       </span>
                     </td>
-
-                    <td className="p-4">
+                    <td className="p-3 sm:p-4">
                       <span
-                        className={`rounded-full px-3 py-1 text-sm ${
+                        className={`rounded-full px-2 py-1 text-xs ${
                           patient.priority === "stat"
                             ? "bg-red-100 text-red-700"
                             : patient.priority === "urgent"
@@ -215,8 +148,7 @@ export default function DashboardPage() {
                         {patient.priority}
                       </span>
                     </td>
-
-                    <td className="p-4">
+                    <td className="p-3 sm:p-4">
                       <Link
                         href={`/dashboard/patients/${patient.id}`}
                         className="font-semibold text-blue-600 hover:text-blue-800"
